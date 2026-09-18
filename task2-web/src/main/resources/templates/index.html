@@ -75,9 +75,18 @@ form.addEventListener('submit', async event => {
         const response = await fetch('/api/calculations', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({first: document.getElementById('first').value, second: document.getElementById('second').value})
+            body: JSON.stringify({first: document.getElementById('first').value.trim(), second: document.getElementById('second').value.trim()})
         });
-        if (!response.ok) throw new Error('Please enter non-negative decimal integers only.');
+        if (!response.ok) {
+            let message = 'The server rejected the calculation request (' + response.status + ').';
+            try {
+                const details = await response.json();
+                if (details.message) message = details.message;
+            } catch (ignored) {
+                // Keep the HTTP status message when the server has no JSON error body.
+            }
+            throw new Error(message);
+        }
         const job = await response.json();
         stream = new EventSource('/api/calculations/' + job.id + '/progress');
         stream.addEventListener('step', event => {

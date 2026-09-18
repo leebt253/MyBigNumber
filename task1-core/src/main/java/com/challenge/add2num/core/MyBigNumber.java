@@ -4,36 +4,40 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class LargeNumberAdder {
+public final class MyBigNumber {
     public interface StepListener {
         void onStep(AdditionStep step);
     }
 
     private final PrintStream log;
 
-    public LargeNumberAdder() {
+    public MyBigNumber() {
         this(null);
     }
 
-    public LargeNumberAdder(PrintStream log) {
+    public MyBigNumber(PrintStream log) {
         this.log = log;
     }
 
-    public AdditionResult add(String first, String second) {
-        return add(first, second, null);
+    public String sum(String stn1, String stn2) {
+        return calculate(stn1, stn2, null).getValue();
     }
 
-    public AdditionResult add(String first, String second, StepListener listener) {
-        int totalSteps = Math.max(first.length(), second.length());
+    public String sum(String stn1, String stn2, StepListener listener) {
+        return calculate(stn1, stn2, listener).getValue();
+    }
+
+    public AdditionResult calculate(String stn1, String stn2, StepListener listener) {
+        int totalSteps = Math.max(stn1.length(), stn2.length());
         StringBuilder reversed = new StringBuilder(totalSteps + 1);
         List<AdditionStep> steps = new ArrayList<AdditionStep>(totalSteps);
         int carry = 0;
 
         for (int offset = 0; offset < totalSteps; offset++) {
-            int index1 = first.length() - 1 - offset;
-            int index2 = second.length() - 1 - offset;
-            int digit1 = index1 >= 0 ? first.charAt(index1) - '0' : 0;
-            int digit2 = index2 >= 0 ? second.charAt(index2) - '0' : 0;
+            int index1 = stn1.length() - 1 - offset;
+            int index2 = stn2.length() - 1 - offset;
+            int digit1 = index1 >= 0 ? stn1.charAt(index1) - '0' : 0;
+            int digit2 = index2 >= 0 ? stn2.charAt(index2) - '0' : 0;
             int carryIn = carry;
             int total = digit1 + digit2 + carryIn;
             int resultDigit = total % 10;

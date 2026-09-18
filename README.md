@@ -2,7 +2,7 @@
 
 This repository implements both tasks of the Add2Num challenge in Java.
 
-- **Task 1** is `task1-core`, a reusable Maven JAR containing the `LargeNumberAdder` core.
+- **Task 1** is `task1-core`, a reusable Maven JAR containing the `MyBigNumber` core.
 - **Task 2** is `task2-web`, a Spring Boot, Thymeleaf, and Bootstrap web application that consumes the Task 1 JAR.
 - The web application reports the real calculation progress through Server-Sent Events.
 
@@ -85,16 +85,16 @@ On macOS or Linux, use an equivalent path under `~/Projects`.
 
 ## 3. Task 1: build, test, and package the core
 
-The core class is `com.challenge.add2num.core.LargeNumberAdder`. Its public API:
+The core class is `com.challenge.add2num.core.MyBigNumber`. Its required API is:
 
 ```java
-AdditionResult add(String first, String second)
-AdditionResult add(String first, String second, StepListener listener)
+String sum(String stn1, String stn2)
 ```
 
 It processes both strings from right to left, adds each pair of digits with the
 carry, preserves arbitrary-length precision, records every step, and writes the
-calculation history when constructed with a `PrintStream`.
+calculation history when constructed with a `PrintStream`. The web module uses the
+additional callback-enabled calculation API to stream progress.
 
 Run Task 1 tests:
 
@@ -113,6 +113,14 @@ The artifact is created at:
 ```text
 task1-core\target\add2num-core-0.0.1.jar
 ```
+
+The Task 1 handoff branch is named `core`:
+
+```powershell
+git switch core
+```
+
+The `main` branch contains the complete Task 1 and Task 2 solution.
 
 ## 4. Task 2: run the web application
 
@@ -212,7 +220,8 @@ Expected result:
 
 ## 8. Version handoff
 
-Create the requested `0.0.1` version as a Git tag after the implementation is complete:
+Create the requested `0.0.1` version as a Git tag after the implementation is complete.
+Publish the Task 1 artifact on branch `core` and the complete solution on `main`:
 
 ```powershell
 git add .
@@ -220,4 +229,6 @@ git commit -m "Implement Add2Num Task 1 and Task 2"
 git tag 0.0.1
 git remote add origin https://github.com/leebt253/MyBigNumber.git
 git push -u origin main --tags
+git switch -c core
+git push -u origin core
 ```
