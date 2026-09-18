@@ -1,4 +1,4 @@
-# MyBigNumber - Add2Num
+#  Project Add 2 numbers
 
 This repository implements both tasks of the Add2Num challenge in Java.
 
