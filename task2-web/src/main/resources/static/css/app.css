@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap');
+:root { --ink: #172121; --paper: #f4f1ea; --accent: #e7b84b; --line: #d6d0c4; }
+body { background: radial-gradient(circle at 90% 0%, #f8dca4 0, transparent 28%), var(--paper); color: var(--ink); font-family: Manrope, sans-serif; min-height: 100vh; }
+.eyebrow, .label { color: #80651d; font-family: 'DM Mono', monospace; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+.panel { background: rgba(255, 255, 255, .82); border: 1px solid var(--line); border-radius: 8px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(23, 33, 33, .06); }
+.form-control { border-color: var(--line); border-radius: 5px; font-family: 'DM Mono', monospace; }
+.form-control:focus { border-color: var(--ink); box-shadow: 0 0 0 .2rem rgba(231, 184, 75, .3); }
+.btn-dark { background: var(--ink); border-color: var(--ink); border-radius: 5px; }
+.result { background: var(--ink); border-radius: 8px; color: white; padding: 1rem; }
+.result .label { color: var(--accent); }
+.result-value { display: block; font-family: 'DM Mono', monospace; font-size: clamp(1.5rem, 4vw, 2.7rem); margin-top: .65rem; overflow-wrap: anywhere; }
+table { font-family: 'DM Mono', monospace; font-size: .88rem; }
+thead { color: #80651d; font-size: .72rem; text-transform: uppercase; }
+@media (max-width: 575px) { main { padding-top: 2rem !important; } .panel { padding: 1rem; } }
