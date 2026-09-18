@@ -25,6 +25,44 @@ javac -version
 mvn -version
 ```
 
+If a command is not found, install the missing tool before continuing. On Windows
+10/11, open PowerShell and use the following commands:
+
+Install Git:
+
+```powershell
+winget install --id Git.Git --exact --accept-source-agreements --accept-package-agreements
+```
+
+Install Java JDK. The JDK provides both `java` and `javac`:
+
+```powershell
+winget install --id EclipseAdoptium.Temurin.17.JDK --exact --accept-source-agreements --accept-package-agreements
+```
+
+Install Maven for the current Windows user if `mvn` is not found. Run this block
+only when Maven is not already installed, and close any running Maven or Spring
+Boot process first:
+
+```powershell
+$mavenVersion = '3.9.10'
+$tools = Join-Path $env:USERPROFILE 'tools'
+$mavenHome = Join-Path $tools "apache-maven-$mavenVersion"
+$zip = Join-Path $env:TEMP "apache-maven-$mavenVersion-bin.zip"
+New-Item -ItemType Directory -Force $tools | Out-Null
+Invoke-WebRequest "https://archive.apache.org/dist/maven/maven-3/$mavenVersion/binaries/apache-maven-$mavenVersion-bin.zip" -OutFile $zip
+Expand-Archive $zip -DestinationPath $tools -Force
+[Environment]::SetEnvironmentVariable('MAVEN_HOME', $mavenHome, 'User')
+$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+if ($userPath -notlike "*$mavenHome\bin*") {
+	[Environment]::SetEnvironmentVariable('Path', "$userPath;$mavenHome\bin", 'User')
+}
+```
+
+Close and reopen PowerShell so the updated PATH is loaded, then run the four
+version commands again. Continue only after `git`, `java`, `javac`, and `mvn`
+all return a version.
+
 If all commands work, continue with the clone step. If the project is already open,
 run the commands from the repository root, the folder containing `pom.xml`.
 
