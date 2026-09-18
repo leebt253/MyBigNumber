@@ -71,17 +71,26 @@ run the commands from the repository root, the folder containing `pom.xml`.
 Clone the public repository once:
 
 ```powershell
-git clone https://github.com/leebt253/MyBigNumber.git MyBigNumber
-Set-Location .\MyBigNumber
+$projectsRoot = 'D:\Projects' # Change this to any folder you choose.
+$clonePath = Join-Path $projectsRoot 'github.com\leebt253\MyBigNumber'
+New-Item -ItemType Directory -Force (Split-Path $clonePath) | Out-Null
+git clone https://github.com/leebt253/MyBigNumber.git $clonePath
+Set-Location $clonePath
 ```
 
-For the handoff layout requested by the challenge, a Windows clone path can be:
+The path is built from three required parts:
 
 ```text
-D:\Projects\github.com\leebt253\MyBigNumber
+<your projects folder>\github.com\leebt253\MyBigNumber
 ```
 
-On macOS or Linux, use an equivalent path under `~/Projects`.
+- `<your projects folder>` is selected by the user, for example `D:\Projects`.
+- `github.com` identifies the Git server used by the repository.
+- `leebt253` is the GitHub account from the repository URL.
+- `MyBigNumber` is the project name from the repository URL.
+
+For GitLab, replace `github.com` with `gitlab.com` and use the matching repository
+URL. On macOS or Linux, use the same structure under a folder such as `~/Projects`.
 
 ## 3. Task 1: build, test, and package the core
 
@@ -167,6 +176,10 @@ Run all Task 1 and Task 2 tests from the repository root:
 ```powershell
 mvn clean test
 ```
+
+The Task 2 test suite verifies the calculation job and the SSE stream, including
+the number of step events, `50%` and `100%` progress for a two-column example,
+the `complete` event, the final result, and the final carry.
 
 ## 6. End-user smoke test
 
